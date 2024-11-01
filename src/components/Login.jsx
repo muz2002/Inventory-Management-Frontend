@@ -6,10 +6,12 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Clear any existing errors
+    setLoading(true); // Start loading
 
     try {
       // Make a POST request to your backend login endpoint
@@ -26,16 +28,15 @@ export default function Login() {
       }
 
       const data = await response.json();
-      // Handle successful login (e.g., save token, redirect, etc.)
       console.log("Login successful:", data);
-      
-      // Optionally, redirect to the home page or another route after successful login
-      // For example:
-      // window.location.href = "/home"; 
 
+      // Optionally, redirect to the home page or another route after successful login
+      window.location.href = "/sidebar";
     } catch (error) {
       setError(error.message);
       console.error("Login error:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
@@ -55,9 +56,12 @@ export default function Login() {
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
         <form onSubmit={handleLogin} className="space-y-6">
           {error && <div className="text-red-500">{error}</div>}
-          
+
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-900">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-900"
+            >
               Email address
             </label>
             <div className="mt-2">
@@ -76,11 +80,17 @@ export default function Login() {
 
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-900">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-900"
+              >
                 Password
               </label>
               <div className="text-sm">
-                <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
+                <a
+                  href="#"
+                  className="font-semibold text-indigo-600 hover:text-indigo-500"
+                >
                   Forgot password?
                 </a>
               </div>
@@ -103,16 +113,20 @@ export default function Login() {
             <button
               type="submit"
               className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              disabled={loading}
             >
-              Sign in
+              {loading ? "Loading..." : "Sign in"}
             </button>
           </div>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Not a member?{" "}
-          <Link to = "/register" className="font-semibold text-indigo-600 hover:text-indigo-500">
-            Register 
+          <Link
+            to="/register"
+            className="font-semibold text-indigo-600 hover:text-indigo-500"
+          >
+            Register
           </Link>
         </p>
       </div>
