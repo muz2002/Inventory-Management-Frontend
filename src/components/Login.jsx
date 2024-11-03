@@ -1,12 +1,13 @@
 import { useState } from "react";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -30,8 +31,12 @@ export default function Login() {
       const data = await response.json();
       console.log("Login successful:", data);
 
-      // Optionally, redirect to the home page or another route after successful login
-      window.location.href = "/sidebar";
+      // Store data like tokens or user info if needed
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("userName", data.name); // Assuming response includes the user's name
+
+      // Redirect to the home page
+      navigate("/home");
     } catch (error) {
       setError(error.message);
       console.error("Login error:", error);
@@ -87,12 +92,12 @@ export default function Login() {
                 Password
               </label>
               <div className="text-sm">
-                <a
-                  href="#"
+                <Link
+                  to="/forgot-password"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot password?
-                </a>
+                </Link>
               </div>
             </div>
             <div className="mt-2">
