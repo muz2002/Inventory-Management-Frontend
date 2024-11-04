@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import profileImage from "../assets/images/profileImage.jpg";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState({});
   const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true); // Added loading state
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false); // State for image enlargement
 
   useEffect(() => {
     // Get the user's name from local storage
@@ -47,8 +49,25 @@ function Dashboard() {
     fetchDashboardData();
   }, []);
 
+  // Function to toggle image enlargement
+  const handleImageClick = () => {
+    setIsImageEnlarged(!isImageEnlarged);
+  };
+
   return (
-    <div className="p-6">
+    <div className="relative p-6">
+      {/* User Profile Picture in Top Right Corner */}
+      <div className="absolute top-2 right-6">
+        <img
+          className={`h-16 w-16 rounded-full border-2 border-green-300 transition-transform duration-300 ${
+            isImageEnlarged ? "scale-150" : ""
+          }`} // Apply scaling on click
+          src={profileImage}
+          alt="User"
+          onClick={handleImageClick} // Add click handler
+        />
+      </div>
+
       <h1 className="text-2xl font-semibold text-gray-800 mb-4">
         Welcome{userName ? `, ${userName}` : ""}
       </h1>

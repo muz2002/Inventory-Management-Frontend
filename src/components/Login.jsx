@@ -33,7 +33,8 @@ export default function Login() {
 
       // Store data like tokens or user info if needed
       localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("userName", data.name); // Assuming response includes the user's name
+      localStorage.setItem("userName", data.name); 
+      localStorage.setItem("refreshToken",data.refreshToken);// Assuming response includes the user's name
 
       // Redirect to the home page
       navigate("/home");
@@ -93,7 +94,7 @@ export default function Login() {
               </label>
               <div className="text-sm">
                 <Link
-                  to="/forgot-password"
+                  to="/forgotpassword"
                   className="font-semibold text-indigo-600 hover:text-indigo-500"
                 >
                   Forgot password?

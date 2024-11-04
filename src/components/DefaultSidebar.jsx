@@ -12,10 +12,12 @@ import {
   Cog6ToothIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
+import { Link } from "react-router-dom";
+import  LogoutButton  from "./LogoutButton";
 
 export function DefaultSidebar() {
   return (
-    <Card className="h-screen w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-green-50">
+    <Card className="h-screen w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5z flex flex-col bg-green-50">
       <div className="mb-4 p-4 bg-indigo-600 rounded-lg flex items-center">
         <ListItemPrefix className="mr-2">
           <svg
@@ -37,13 +39,18 @@ export function DefaultSidebar() {
           Inventory Management
         </Typography>
       </div>
-      <List className="flex-1">
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
-          <ListItemPrefix>
-            <PresentationChartBarIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Dashboard
-        </ListItem>
+      <List className="flex-1 text-black">
+        <Link
+          className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
+          to="/home"
+        >
+          <ListItem>
+            <ListItemPrefix>
+              <PresentationChartBarIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Dashboard
+          </ListItem>
+        </Link>
         <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
           <ListItemPrefix>
             <ShoppingBagIcon className="h-5 w-5" />
@@ -69,12 +76,17 @@ export function DefaultSidebar() {
           </ListItemPrefix>
           Purchase Orders
         </ListItem>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
-          <ListItemPrefix>
-            <UserCircleIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          Profile
-        </ListItem>
+        <Link
+          className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
+          to="/profile"
+        >
+          <ListItem className="flex">
+            <ListItemPrefix>
+              <UserCircleIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Profile
+          </ListItem>
+        </Link>
         <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
@@ -82,12 +94,7 @@ export function DefaultSidebar() {
           Settings
         </ListItem>
       </List>
-      <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
-        <ListItemPrefix>
-          <PowerIcon className="h-5 w-5 mr-3" />
-        </ListItemPrefix>
-        Log Out
-      </ListItem>
+      <LogoutButton />
     </Card>
   );
 }
