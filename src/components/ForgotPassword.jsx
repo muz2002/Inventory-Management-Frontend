@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +8,7 @@ const ForgotPassword = () => {
   const [repeatPassword, setRepeatPassword] = useState("");
   const [step, setStep] = useState(1); // Track the current step in the process
   const [message, setMessage] = useState("");
+  const navigate = useNavigate(); // Use useNavigate for redirection
 
   // Handle email input change
   const handleEmailChange = (e) => setEmail(e.target.value);
@@ -61,15 +62,20 @@ const ForgotPassword = () => {
     try {
       const response = await fetch(
         `http://localhost:8080/forgotPassword/changePassword/${email}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ password, repeatPassword }),
-        }
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password, repeatPassword }),
+      }
       );
       const result = await response.text();
       setMessage(result);
-      if (response.ok) setStep(4); // Final step, show success message
+      if (response.ok) {
+        setStep(4); // Move to the final step
+        setTimeout(() => {
+          navigate("/login"); // Redirect to the login page after 2 seconds
+        }, 2000);
+      }
     } catch (error) {
       setMessage("Failed to change password. Try again.");
     }
@@ -84,13 +90,14 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="antialiased bg-slate-200 min-h-screen flex items-center justify-center">
+    <div className="antialiased bg-slate-50 min-h-screen flex items-center justify-center">
       <div className="max-w-lg mx-auto my-10 bg-white p-8 rounded-xl shadow shadow-slate-300">
         <h1 className="text-4xl font-medium">Reset password</h1>
         <p className="text-slate-500">
           {step === 1 && "Fill up the form to reset the password"}
           {step === 2 && "Enter the OTP sent to your email"}
           {step === 3 && "Set your new password"}
+          {step === 4 && "Password changed successfully! Redirecting to login..."}
         </p>
 
         {message && <p className="text-red-500">{message}</p>}
@@ -132,9 +139,7 @@ const ForgotPassword = () => {
             {step === 3 && (
               <>
                 <label htmlFor="password">
-                  <p className="font-medium text-slate-700 pb-2">
-                    New Password
-                  </p>
+                  <p className="font-medium text-slate-700 pb-2">New Password</p>
                   <input
                     id="password"
                     name="password"
@@ -147,9 +152,7 @@ const ForgotPassword = () => {
                   />
                 </label>
                 <label htmlFor="repeatPassword">
-                  <p className="font-medium text-slate-700 pb-2">
-                    Confirm Password
-                  </p>
+                  <p className="font-medium text-slate-700 pb-2">Confirm Password</p>
                   <input
                     id="repeatPassword"
                     name="repeatPassword"
@@ -164,12 +167,15 @@ const ForgotPassword = () => {
               </>
             )}
 
-            <button
-              type="submit"
-              className="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center"
-            >
-              <span>{step === 3 ? "Change Password" : "Submit"}</span>
-            </button>
+            {/* Conditionally render the button based on the step */}
+            {step < 4 && (
+              <button
+                type="submit"
+                className="w-full py-3 font-medium text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg border-indigo-500 hover:shadow inline-flex space-x-2 items-center justify-center"
+              >
+                <span>{step === 3 ? "Change Password" : "Submit"}</span>
+              </button>
+            )}
           </div>
         </form>
 

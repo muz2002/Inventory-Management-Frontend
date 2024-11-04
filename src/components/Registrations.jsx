@@ -1,5 +1,6 @@
 import { useState } from "react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Registration() {
   const [name, setName] = useState("");
@@ -142,9 +143,9 @@ export default function Registration() {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Already a member?{" "}
-          <a href="/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
+          <Link to = "/login" className="font-semibold text-indigo-600 hover:text-indigo-500">
             Log in to your account
-          </a>
+          </Link>
         </p>
       </div>
     </div>

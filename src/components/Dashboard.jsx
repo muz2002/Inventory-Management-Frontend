@@ -1,18 +1,27 @@
-import { useEffect, useState } from "react";
-import profileImage from "../assets/images/profileImage.jpg";
+import React, { useEffect, useState } from "react";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState({});
   const [userName, setUserName] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true); // Added loading state
-  const [isImageEnlarged, setIsImageEnlarged] = useState(false); // State for image enlargement
+  const [loading, setLoading] = useState(true);
+  const [isImageEnlarged, setIsImageEnlarged] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState(null);
 
   useEffect(() => {
-    // Get the user's name from local storage
+    // Get the user's name and profile image URL from local storage
     const storedUserName = localStorage.getItem("userName");
+    const userId = localStorage.getItem("userId");
+
     if (storedUserName) {
       setUserName(storedUserName);
+    }
+
+    if (userId) {
+      const storedProfileImageUrl = localStorage.getItem(`profileImageUrl_${userId}`);
+      if (storedProfileImageUrl) {
+        setProfileImageUrl(storedProfileImageUrl);
+      }
     }
 
     // Fetch dashboard data with authorization
@@ -22,27 +31,24 @@ function Dashboard() {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // Ensure correct token key
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
           },
         });
 
         if (!response.ok) {
-          throw new Error(
-            "Failed to fetch data. Check your credentials or permissions."
-          );
+          throw new Error("Failed to fetch data. Check your credentials or permissions.");
         }
 
         const data = await response.json();
 
         // Calculate the total stock by summing up the quantities of each item
         const totalStock = data.reduce((acc, item) => acc + item.quantity, 0);
-
         setDashboardData({ total_stock: totalStock });
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
         setError("Failed to load dashboard data. Please try again.");
       } finally {
-        setLoading(false); // Set loading to false after the fetch
+        setLoading(false);
       }
     };
 
@@ -61,10 +67,10 @@ function Dashboard() {
         <img
           className={`h-16 w-16 rounded-full border-2 border-green-300 transition-transform duration-300 ${
             isImageEnlarged ? "scale-150" : ""
-          }`} // Apply scaling on click
-          src={profileImage}
+          }`}
+          src={profileImageUrl || "/path/to/defaultImage.jpg"} // Use profileImageUrl or a fallback
           alt="User"
-          onClick={handleImageClick} // Add click handler
+          onClick={handleImageClick}
         />
       </div>
 
@@ -72,7 +78,7 @@ function Dashboard() {
         Welcome{userName ? `, ${userName}` : ""}
       </h1>
 
-      {loading ? ( // Conditional rendering for loading state
+      {loading ? (
         <p className="text-gray-500">Loading dashboard data...</p>
       ) : (
         <>
@@ -81,9 +87,7 @@ function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Total Stock Card */}
             <div className="p-6 bg-white shadow-lg rounded-lg">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">
-                Total Stock
-              </h3>
+              <h3 className="text-lg font-medium text-gray-700 mb-2">Total Stock</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.total_stock || 0}
               </p>
@@ -91,9 +95,7 @@ function Dashboard() {
 
             {/* Sales Orders Card */}
             <div className="p-6 bg-white shadow-lg rounded-lg">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">
-                Sales Orders
-              </h3>
+              <h3 className="text-lg font-medium text-gray-700 mb-2">Sales Orders</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.sales_orders || 0}
               </p>
@@ -101,9 +103,7 @@ function Dashboard() {
 
             {/* Purchase Orders Card */}
             <div className="p-6 bg-white shadow-lg rounded-lg">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">
-                Purchase Orders
-              </h3>
+              <h3 className="text-lg font-medium text-gray-700 mb-2">Purchase Orders</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.purchase_orders || 0}
               </p>

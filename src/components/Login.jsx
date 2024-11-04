@@ -34,7 +34,8 @@ export default function Login() {
       // Store data like tokens or user info if needed
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("userName", data.name); 
-      localStorage.setItem("refreshToken",data.refreshToken);// Assuming response includes the user's name
+      localStorage.setItem("refreshToken",data.refreshToken);
+      localStorage.setItem("userId", data.userId)// Assuming response includes the user's name
 
       // Redirect to the home page
       navigate("/home");
