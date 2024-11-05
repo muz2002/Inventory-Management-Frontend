@@ -18,7 +18,7 @@ import  LogoutButton  from "./LogoutButton";
 export function DefaultSidebar() {
   return (
     <Card className="h-screen w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5z flex flex-col bg-green-50">
-      <div className="mb-4 p-4 bg-indigo-600 rounded-lg flex items-center">
+      <div className="mb-4 p-4 bg-indigo-600 rounded-full flex items-center">
         <ListItemPrefix className="mr-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"

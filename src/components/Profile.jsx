@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const Profile = () => {
   const [profileImageFile, setProfileImageFile] = useState(null);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
   const profileData = {
@@ -32,7 +33,7 @@ const Profile = () => {
           });
 
           if (imageResponse.status === 404) {
-            setProfileImageUrl(null); // No profile image exists for this user
+            setProfileImageUrl(null);
             localStorage.removeItem(`profileImageUrl_${userId}`);
             return;
           } else if (!imageResponse.ok) {
@@ -42,8 +43,6 @@ const Profile = () => {
           const imageBlob = await imageResponse.blob();
           const imageUrl = URL.createObjectURL(imageBlob);
           setProfileImageUrl(imageUrl);
-
-          // Store the image URL with user-specific key
           localStorage.setItem(`profileImageUrl_${userId}`, imageUrl);
         } catch (error) {
           console.error("Error fetching profile image:", error);
@@ -53,7 +52,6 @@ const Profile = () => {
       fetchUserProfile();
     }
 
-    // Clear the previous user's image when a new user logs in
     return () => {
       const previousUserId = localStorage.getItem("userId");
       if (previousUserId && previousUserId !== userId) {
@@ -96,7 +94,6 @@ const Profile = () => {
 
       const fullImageUrl = `http://localhost:8080${result.imageUrl}`;
       setProfileImageUrl(fullImageUrl);
-
       localStorage.setItem(`profileImageUrl_${localStorage.getItem("userId")}`, fullImageUrl);
     } catch (error) {
       console.error(error);
@@ -118,24 +115,25 @@ const Profile = () => {
         <span className="absolute right-0 m-3 h-3 w-3 rounded-full bg-green-500 ring-2 ring-green-300 ring-offset-2"></span>
         {profileImageUrl ? (
           <img
-            className="mx-auto h-auto w-full rounded-full"
+            className="mx-auto h-auto w-full rounded-full cursor-pointer"
             src={profileImageUrl}
             alt={profileData.name}
+            onClick={() => setIsModalOpen(true)}
           />
         ) : (
           <div className="h-full w-full rounded-full bg-gray-200 flex items-center justify-center">
             <span className="text-gray-400">No Image</span>
           </div>
         )}
-      </div>
 
-      {/* Upload Button */}
-      <button
-        className="mb-4 h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white hover:bg-blue-600 transition-colors"
-        onClick={() => fileInputRef.current.click()}
-      >
-        +
-      </button>
+        {/* Upload Button positioned to the right */}
+        <button
+          className="absolute bottom-0 right-[-1px] h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white hover:bg-blue-600 transition-colors transform -translate-y-1/2"
+          onClick={() => fileInputRef.current.click()}
+        >
+          +
+        </button>
+      </div>
 
       {/* Hidden file input */}
       <input
@@ -144,7 +142,7 @@ const Profile = () => {
         style={{ display: "none" }}
         onChange={handleFileChange}
       />
-      <button onClick={uploadImage} className="bg-blue-500 text-white p-2">
+      <button onClick={uploadImage} className="bg-blue-500 text-white p-2 rounded-lg text-white hover:bg-blue-600 transition-colors">
         Upload Image
       </button>
 
@@ -167,6 +165,21 @@ const Profile = () => {
           Joined On: {new Date(profileData.joinedOn).toLocaleDateString()}
         </span>
       </div>
+
+      {/* Modal for showing profile image */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="relative p-4 bg-white rounded-lg">
+            <button
+              className="absolute top-1 right-1 text-gray-500 hover:text-gray-700"
+              onClick={() => setIsModalOpen(false)}
+            >
+              &times;
+            </button>
+            <img src={profileImageUrl} alt="Profile" className="max-w-full max-h-[40vh] rounded" />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

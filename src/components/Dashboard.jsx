@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState({});
@@ -7,6 +7,8 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
   const [profileImageUrl, setProfileImageUrl] = useState(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Get the user's name and profile image URL from local storage
@@ -60,21 +62,76 @@ function Dashboard() {
     setIsImageEnlarged(!isImageEnlarged);
   };
 
+  // Function to toggle dropdown visibility
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
+
+  // Close dropdown when clicking outside of it
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div className="relative p-6">
-      {/* User Profile Picture in Top Right Corner */}
-      <div className="absolute top-2 right-6">
-        <img
-          className={`h-16 w-16 rounded-full border-2 border-green-300 transition-transform duration-300 ${
-            isImageEnlarged ? "scale-150" : ""
-          }`}
-          src={profileImageUrl || "/path/to/defaultImage.jpg"} // Use profileImageUrl or a fallback
-          alt="User"
-          onClick={handleImageClick}
-        />
+      {/* User Profile Section */}
+      <div className="absolute top-2 right-6 flex items-center space-x-4">
+        <span className="block font-medium text-black text-sm cursor-pointer">{userName}</span>
+        <div className="relative">
+          <button
+            onClick={toggleDropdown}
+            className="flex items-center text-sm font-medium text-gray-900 rounded-full hover:text-blue-600 dark:hover:text-blue-500 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700"
+            type="button"
+          >
+            <img
+              className={`h-16 w-16 rounded-full border-2 border-green-300 transition-transform duration-300 ${
+                isImageEnlarged ? "scale-150" : ""
+              }`}
+              src={profileImageUrl || "/path/to/defaultImage.jpg"}
+              alt="User"
+              onClick={handleImageClick}
+            />
+          </button>
+
+          {/* Dropdown menu */}
+          {dropdownOpen && (
+            <div
+              ref={dropdownRef}
+              className="z-10 absolute right-0 mt-2 bg-white divide-y divide-indigo-200 rounded-lg shadow w-44 "
+            >
+              <div className="px-4 py-3 text-sm text-black ">
+                <div className="font-medium">Pro User</div>
+                <div className="truncate">name@flowbite.com</div>
+              </div>
+              <ul className="py-2 text-sm text-black">
+                <li>
+                  <a href="#" className="block px-4 py-2 hover:bg-indigo-400 hover:text-white">Dashboard</a>
+                </li>
+                <li>
+                  <a href="#" className="block px-4 py-2 hover:bg-indigo-400 hover:text-white">Settings</a>
+                </li>
+                <li>
+                  <a href="#" className="block px-4 py-2 hover:bg-indigo-400 hover:text-white">Earnings</a>
+                </li>
+              </ul>
+              <div className="py-2">
+                <a href="#" className="block px-4 py-2 hover:bg-indigo-400 hover:text-white">Sign out</a>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      <h1 className="text-2xl font-semibold text-gray-800 mb-4">
+      <h1 className="text-3xl w-full text-white font-extrabold bg-gradient-to-r from-indigo-600 via-indigo-400 to-white py-8 rounded-lg pl-6">
         Welcome{userName ? `, ${userName}` : ""}
       </h1>
 
