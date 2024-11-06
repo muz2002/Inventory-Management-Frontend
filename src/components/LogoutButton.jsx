@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ListItem, ListItemPrefix } from "@material-tailwind/react";
-import { PowerIcon } from "@heroicons/react/24/solid";
-import { Dialog, DialogBody, DialogFooter } from "@material-tailwind/react";
+import { Dialog, DialogBody, DialogFooter, Typography, ListItem, ListItemPrefix } from "@material-tailwind/react";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
 
-export function Logout() {
+function LogoutButton({ isOpen }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
+  
   const handleOpen = () => setOpen(!open);
 
   const handleLogout = async () => {
@@ -28,10 +27,9 @@ export function Logout() {
       });
 
       if (response.ok) {
-        // Clear tokens and other user data
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("accessToken");
-        navigate("/login"); // Redirect to login page
+        navigate("/login");
       } else {
         console.error("Logout failed");
       }
@@ -42,17 +40,18 @@ export function Logout() {
 
   return (
     <>
-      <ListItem
-        className="text-black mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
-        onClick={handleOpen} // Open confirmation dialog
-      >
-        <ListItemPrefix>
-          <PowerIcon className="h-5 w-5 mr-3" />
+      <ListItem className="hover:bg-indigo-400 hover:text-white focus:bg-indigo-50 py-3" onClick={handleOpen}>
+        <ListItemPrefix className="mr-4">
+          <ArrowLeftOnRectangleIcon className="h-5 w-5" />
         </ListItemPrefix>
-        <span className="hidden md:block">Sign Out</span>
+        <Typography 
+          className={`${isOpen ? 'md:block' : 'md:hidden'} hidden font-normal text-base text-blue-gray-700`}
+        >
+          Sign Out
+        </Typography>
       </ListItem>
 
-      <Dialog open={open} handler={handleOpen} size="sm">
+      <Dialog open={open} handler={handleOpen}>
         <DialogBody divider>
           <p className="text-black">
             Are you sure you want to log out?
@@ -69,10 +68,10 @@ export function Logout() {
             className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 transition-colors duration-200"
             onClick={() => {
               handleLogout();
-              handleOpen(); // Close the dialog after confirming
+              handleOpen();
             }}
           >
-            Log Out
+            Sign Out  
           </button>
         </DialogFooter>
       </Dialog>
@@ -80,4 +79,4 @@ export function Logout() {
   );
 }
 
-export default Logout;
+export default LogoutButton;

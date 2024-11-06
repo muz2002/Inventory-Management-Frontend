@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Card,
   Typography,
@@ -12,16 +13,37 @@ import {
   UserCircleIcon,
   Cog6ToothIcon,
   Bars3Icon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 
-
 export function DefaultSidebar() {
+  const [isOpen, setIsOpen] = useState(true);
+  const location = useLocation();
+
+  const navItems = [
+    { icon: <PresentationChartBarIcon className="h-5 w-5" />, text: "Dashboard", path: "/home" },
+    { icon: <ShoppingBagIcon className="h-5 w-5" />, text: "Sales Orders", path: "/sales-orders" },
+    { icon: <UserCircleIcon className="h-5 w-5" />, text: "Profile", path: "/profile" },
+    { icon: <Cog6ToothIcon className="h-5 w-5" />, text: "Settings", path: "/settings" },
+  ];
+
   return (
-    <Card className="h-screen transition-all duration-300 ease-in-out w-16 md:w-full md:max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-gray-50">
-      <div className="mb-4 p-4 bg-white md:bg-indigo-600 rounded-full flex items-center justify-center md:justify-between">
-        <ListItemPrefix className="mr-2 hidden md:block">
+    <Card
+      className={`h-screen transition-all duration-300 ease-in-out overflow-hidden
+      ${isOpen ? "md:w-[16rem]" : "md:w-16"} 
+      w-16 p-2 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-gray-50`}
+    >
+      <div
+        className={`mb-4 p-4 ${isOpen ? "bg-indigo-600" : "bg-white"} md:bg-indigo-600 
+        rounded-full flex items-center justify-between transition-colors duration-300`}
+      >
+        <ListItemPrefix 
+          className={`mr-2 ${isOpen ? "md:opacity-100 md:w-auto" : "md:opacity-0 md:w-0"} 
+          hidden md:block transition-all duration-300 ease-in-out overflow-hidden`}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -37,70 +59,54 @@ export function DefaultSidebar() {
             />
           </svg>
         </ListItemPrefix>
-        <Typography variant="h5" color="white" className="hidden md:block">
+
+        <Typography
+          variant="h5"
+          color="white"
+          className={`${isOpen ? "md:block" : "md:hidden"} hidden`}
+        >
           Inventory Management
         </Typography>
-        <ListItemSuffix>
-          <Bars3Icon className="h-8 w-8 text-black md:text-white ml-1" />
-        </ListItemSuffix>
-       
+
+        <button className="hidden md:block text-white" onClick={() => setIsOpen(!isOpen)}>
+          {isOpen ? (
+            <ChevronLeftIcon className="h-5 w-5" />
+          ) : (
+            <ChevronRightIcon className="h-5 w-5" />
+          )}
+        </button>
       </div>
-      <List className="flex-1 text-black">
-        <Link
-          className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
-          to="/home"
-        >
-          <ListItem className="flex items-center justify-center md:justify-start">
-            <ListItemPrefix>
-              <PresentationChartBarIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            <span className="hidden md:block">Dashboard</span>
-          </ListItem>
-        </Link>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
-          <ListItemPrefix>
-            <ShoppingBagIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          <span className="hidden md:block">Sales Orders</span>
-        </ListItem>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
-          <ListItemPrefix>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={1.5}
-              stroke="currentColor"
-              className="w-5 h-5"
+
+      <List className="flex-1 gap-1">
+        {navItems.map((item, index) => (
+          <Link key={index} to={item.path}>
+            <ListItem 
+              className={`py-3 ${
+                location.pathname === item.path 
+                  ? 'bg-indigo-400' 
+                  : 'hover:bg-indigo-400 hover:text-white'
+              }`}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m.75 12 3 3m0 0 3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"
-              />
-            </svg>
-          </ListItemPrefix>
-          <span className="hidden md:block">Purchase Orders</span>
-        </ListItem>
-        <Link
-          className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
-          to="/profile"
-        >
-          <ListItem className="flex items-center justify-center md:justify-start">
-            <ListItemPrefix>
-              <UserCircleIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            <span className="hidden md:block">Profile</span>
-          </ListItem>
-        </Link>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
-          <ListItemPrefix>
-            <Cog6ToothIcon className="h-5 w-5" />
-          </ListItemPrefix>
-          <span className="hidden md:block">Settings</span>
-        </ListItem>
+              <ListItemPrefix className="mr-3">
+                <div className={location.pathname === item.path ? 'text-white' : ''}>
+                  {item.icon}
+                </div>
+              </ListItemPrefix>
+              <Typography 
+                className={`
+                  ${isOpen ? 'md:block' : 'md:hidden'} 
+                  hidden font-normal text-base
+                  ${location.pathname === item.path ? 'text-white' : 'text-blue-gray-700'}
+                `}
+              >
+                {item.text}
+              </Typography>
+            </ListItem>
+          </Link>
+        ))}
       </List>
-      <LogoutButton />
+
+      <LogoutButton isOpen={isOpen} />
     </Card>
   );
 }

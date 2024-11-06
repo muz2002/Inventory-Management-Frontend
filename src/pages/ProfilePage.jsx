@@ -5,12 +5,12 @@ import Profile from "../components/Profile";
 const ProfilePage = () => {
   return (
     <div className="flex h-screen">
-      {/* Sidebar takes up a fixed width */}
-      <div className="bg-green-200"> {/* Adjust width as needed */}
+      
+      <div>
         <DefaultSidebar />
       </div>
       
-      {/* Main content fills the remaining space */}
+      
       <div className="flex-1 flex items-center justify-center">
         <Profile />
       </div>
