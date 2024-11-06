@@ -49,7 +49,7 @@ export function Logout() {
         <ListItemPrefix>
           <PowerIcon className="h-5 w-5 mr-3" />
         </ListItemPrefix>
-        Log Out
+        <span className="hidden md:block">Sign Out</span>
       </ListItem>
 
       <Dialog open={open} handler={handleOpen} size="sm">

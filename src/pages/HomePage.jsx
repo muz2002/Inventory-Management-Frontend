@@ -6,7 +6,7 @@ const HomePage = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar takes up a fixed width */}
-      <div className="bg-green-200">
+      <div>
         <DefaultSidebar />
       </div>
       

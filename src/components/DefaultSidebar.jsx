@@ -4,22 +4,24 @@ import {
   List,
   ListItem,
   ListItemPrefix,
+  ListItemSuffix,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
   ShoppingBagIcon,
   UserCircleIcon,
   Cog6ToothIcon,
-  PowerIcon,
+  Bars3Icon,
 } from "@heroicons/react/24/solid";
 import { Link } from "react-router-dom";
-import  LogoutButton  from "./LogoutButton";
+import LogoutButton from "./LogoutButton";
+
 
 export function DefaultSidebar() {
   return (
-    <Card className="h-screen w-full max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5z flex flex-col bg-green-50">
-      <div className="mb-4 p-4 bg-indigo-600 rounded-full flex items-center">
-        <ListItemPrefix className="mr-2">
+    <Card className="h-screen transition-all duration-300 ease-in-out w-16 md:w-full md:max-w-[16rem] p-4 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-gray-50">
+      <div className="mb-4 p-4 bg-white md:bg-indigo-600 rounded-full flex items-center justify-center md:justify-between">
+        <ListItemPrefix className="mr-2 hidden md:block">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -35,29 +37,33 @@ export function DefaultSidebar() {
             />
           </svg>
         </ListItemPrefix>
-        <Typography variant="h5" color="white">
+        <Typography variant="h5" color="white" className="hidden md:block">
           Inventory Management
         </Typography>
+        <ListItemSuffix>
+          <Bars3Icon className="h-8 w-8 text-black md:text-white ml-1" />
+        </ListItemSuffix>
+       
       </div>
       <List className="flex-1 text-black">
         <Link
           className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
           to="/home"
         >
-          <ListItem>
+          <ListItem className="flex items-center justify-center md:justify-start">
             <ListItemPrefix>
               <PresentationChartBarIcon className="h-5 w-5" />
             </ListItemPrefix>
-            Dashboard
+            <span className="hidden md:block">Dashboard</span>
           </ListItem>
         </Link>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
+        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
           <ListItemPrefix>
             <ShoppingBagIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Sales Orders
+          <span className="hidden md:block">Sales Orders</span>
         </ListItem>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
+        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
           <ListItemPrefix>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -74,24 +80,24 @@ export function DefaultSidebar() {
               />
             </svg>
           </ListItemPrefix>
-          Purchase Orders
+          <span className="hidden md:block">Purchase Orders</span>
         </ListItem>
         <Link
           className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200"
           to="/profile"
         >
-          <ListItem className="flex">
+          <ListItem className="flex items-center justify-center md:justify-start">
             <ListItemPrefix>
               <UserCircleIcon className="h-5 w-5" />
             </ListItemPrefix>
-            Profile
+            <span className="hidden md:block">Profile</span>
           </ListItem>
         </Link>
-        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200">
+        <ListItem className="mb-2 hover:bg-indigo-400 hover:text-white transition-colors duration-200 flex items-center justify-center md:justify-start">
           <ListItemPrefix>
             <Cog6ToothIcon className="h-5 w-5" />
           </ListItemPrefix>
-          Settings
+          <span className="hidden md:block">Settings</span>
         </ListItem>
       </List>
       <LogoutButton />
