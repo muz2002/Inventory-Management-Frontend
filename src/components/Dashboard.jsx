@@ -1,4 +1,30 @@
 import React, { useEffect, useState, useRef } from "react";
+import { 
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  BarChart, Bar, PieChart, Pie, Cell,
+  ResponsiveContainer
+} from 'recharts';
+import defaultProfileImage from "../assets/images/defaultProfile.jpg"; // Import the default profile image
+
+// Dummy data for charts
+const salesData = [
+  { name: 'Jan', sales: 4000, purchases: 2400 },
+  { name: 'Feb', sales: 3000, purchases: 1398 },
+  { name: 'Mar', sales: 2000, purchases: 9800 },
+  { name: 'Apr', sales: 2780, purchases: 3908 },
+  { name: 'May', sales: 1890, purchases: 4800 },
+  { name: 'Jun', sales: 2390, purchases: 3800 },
+  { name: 'Jul', sales: 3490, purchases: 4300 },
+];
+
+const topProductsData = [
+  { name: 'Product A', value: 400 },
+  { name: 'Product B', value: 300 },
+  { name: 'Product C', value: 300 },
+  { name: 'Product D', value: 200 },
+];
+
+const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
 function Dashboard() {
   const [dashboardData, setDashboardData] = useState({});
@@ -6,9 +32,11 @@ function Dashboard() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [isImageEnlarged, setIsImageEnlarged] = useState(false);
-  const [profileImageUrl, setProfileImageUrl] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState(defaultProfileImage); // Initialize with default image
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [timeFilter, setTimeFilter] = useState('week');
+  const [filteredData, setFilteredData] = useState(salesData);
 
   useEffect(() => {
     // Get the user's name and profile image URL from local storage
@@ -81,6 +109,65 @@ function Dashboard() {
     };
   }, []);
 
+  const handleFilterChange = (filter) => {
+    setTimeFilter(filter);
+    // In real app, you would filter actual data here
+    setFilteredData(salesData);
+  };
+
+  useEffect(() => {
+    // Fetch user data including profile image
+    const fetchUserData = async () => {
+      const userId = localStorage.getItem("userId");
+      const accessToken = localStorage.getItem("accessToken");
+      
+      if (userId && accessToken) {
+        // Retrieve profile image from localStorage
+        const storedImageUrl = localStorage.getItem(`profileImageUrl_${userId}`);
+        if (storedImageUrl) {
+          setProfileImage(storedImageUrl);
+        } else {
+          // Fallback to fetch from API if not in localStorage
+          try {
+            const response = await fetch(`http://localhost:8080/users/profileImage/${userId}`, {
+              headers: {
+                Authorization: `Bearer ${accessToken}`,
+              },
+            });
+            if (response.ok) {
+              const imageBlob = await response.blob();
+              const imageUrl = URL.createObjectURL(imageBlob);
+              setProfileImage(imageUrl);
+              localStorage.setItem(`profileImageUrl_${userId}`, imageUrl);
+            } else {
+              setProfileImage(defaultProfileImage);
+            }
+          } catch (error) {
+            console.error("Error fetching profile image:", error);
+            setProfileImage(defaultProfileImage);
+          }
+        }
+
+        // Fetch user name
+        try {
+          const userResponse = await fetch('/api/user', {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          if (userResponse.ok) {
+            const data = await userResponse.json();
+            setUserName(data.name);
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <div className="relative p-6">
       {/* User Profile Section */}
@@ -96,7 +183,7 @@ function Dashboard() {
               className={`h-16 w-16 rounded-full border-2 border-green-300 transition-transform duration-300 ${
                 isImageEnlarged ? "scale-150" : ""
               }`}
-              src={profileImageUrl || "/path/to/defaultImage.jpg"}
+              src={profileImageUrl || defaultProfileImage} // Use the default image if profileImageUrl is not set
               alt="User"
               onClick={handleImageClick}
             />
@@ -106,9 +193,9 @@ function Dashboard() {
           {dropdownOpen && (
             <div
               ref={dropdownRef}
-              className="z-10 absolute right-0 mt-2 bg-white divide-y divide-indigo-200 rounded-lg shadow w-44 "
+              className="z-10 absolute right-0 mt-2 bg-white divide-y divide-indigo-200 rounded-lg shadow w-44"
             >
-              <div className="px-4 py-3 text-sm text-black ">
+              <div className="px-4 py-3 text-sm text-black">
                 <div className="font-medium">Pro User</div>
                 <div className="truncate">name@flowbite.com</div>
               </div>
@@ -168,6 +255,86 @@ function Dashboard() {
           </div>
         </>
       )}
+
+      {/* Filter Controls */}
+      <div className="mb-6 flex gap-4 mt-5">
+        <button
+          onClick={() => handleFilterChange('week')}
+          className={`px-4 py-2 rounded ${timeFilter === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          Week
+        </button>
+        <button
+          onClick={() => handleFilterChange('month')}
+          className={`px-4 py-2 rounded ${timeFilter === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          Month
+        </button>
+        <button
+          onClick={() => handleFilterChange('year')}
+          className={`px-4 py-2 rounded ${timeFilter === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+        >
+          Year
+        </button>
+      </div>
+
+      {/* Charts Grid */}
+      <div className="grid grid-cols-2 gap-6">
+        {/* Sales vs Purchases Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">Sales vs Purchases</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={filteredData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="sales" stroke="#8884d8" />
+              <Line type="monotone" dataKey="purchases" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Top Products Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">Top Products</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={topProductsData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="value"
+              >
+                {topProductsData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Monthly Revenue Chart */}
+        <div className="bg-white p-4 rounded-lg shadow">
+          <h2 className="text-lg font-semibold mb-4">Monthly Revenue</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={filteredData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="sales" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
     </div>
   );
 }

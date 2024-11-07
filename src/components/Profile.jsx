@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import defaultProfileImage from "../assets/images/defaultProfile.jpg"; // Adjust the path as necessary
 
 const Profile = () => {
   const [profileImageFile, setProfileImageFile] = useState(null);
-  const [profileImageUrl, setProfileImageUrl] = useState(null);
+  const [profileImageUrl, setProfileImageUrl] = useState(defaultProfileImage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -33,7 +34,7 @@ const Profile = () => {
           });
 
           if (imageResponse.status === 404) {
-            setProfileImageUrl(null);
+            setProfileImageUrl(defaultProfileImage);
             localStorage.removeItem(`profileImageUrl_${userId}`);
             return;
           } else if (!imageResponse.ok) {
@@ -46,6 +47,7 @@ const Profile = () => {
           localStorage.setItem(`profileImageUrl_${userId}`, imageUrl);
         } catch (error) {
           console.error("Error fetching profile image:", error);
+          setProfileImageUrl(defaultProfileImage);
         }
       };
 
