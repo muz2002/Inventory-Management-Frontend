@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import React from "react";
 import { Link } from "react-router-dom";
 
@@ -9,6 +9,15 @@ export default function Registration() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [countries, setCountries] = useState([]);
+  const [selectedCountryId, setSelectedCountryId] = useState('');
+  const [newCountryName, setNewCountryName] = useState('');
+
+  useEffect(() => {
+    fetch('http://localhost:8080/country/list-countries')
+      .then(response => response.json())
+      .then(data => setCountries(data));  
+  }, []);
 
   const handleRegistration = async (e) => {
     e.preventDefault();
@@ -16,13 +25,22 @@ export default function Registration() {
     setSuccess(""); // Clear any existing success messages
 
     try {
+      const userData = {
+        name,
+        username,
+        email,
+        password,
+        countryId: selectedCountryId,
+        countryName: newCountryName,
+      };
+
       // Make a POST request to your backend registration endpoint
       const response = await fetch("http://localhost:8080/user_auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, username, email, password }),
+        body: JSON.stringify(userData),
       });
 
       if (!response.ok) {
@@ -127,6 +145,44 @@ export default function Registration() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="country" className="block text-sm font-medium text-gray-900">
+              Country
+            </label>
+            <div className="mt-2">
+              <select
+                id="country"
+                name="country"
+                value={selectedCountryId}
+                onChange={(e) => setSelectedCountryId(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900"
+              >
+                <option value="">Select your country</option>
+                {countries.map((country) => (
+                  <option key={country.countryId} value={country.countryId}>
+                    {country.countryName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label htmlFor="newCountry" className="block text-sm font-medium text-gray-900">
+              Or add a new country
+            </label>
+            <div className="mt-2">
+              <input
+                id="newCountry"
+                name="newCountry"
+                type="text"
+                value={newCountryName}
+                onChange={(e) => setNewCountryName(e.target.value)}
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900"
               />
             </div>
           </div>

@@ -5,7 +5,6 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
 } from "@material-tailwind/react";
 import {
   PresentationChartBarIcon,
@@ -15,6 +14,7 @@ import {
   Bars3Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  UserGroupIcon 
 } from "@heroicons/react/24/solid";
 import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
@@ -27,6 +27,7 @@ export function DefaultSidebar() {
     { icon: <PresentationChartBarIcon className="h-5 w-5" />, text: "Dashboard", path: "/home" },
     { icon: <ShoppingBagIcon className="h-5 w-5" />, text: "Sales Orders", path: "/sales-orders" },
     { icon: <UserCircleIcon className="h-5 w-5" />, text: "Profile", path: "/profile" },
+    {icon : <UserGroupIcon className="h-5 w-5" />, text: "Users", path: "/users"},
     { icon: <Cog6ToothIcon className="h-5 w-5" />, text: "Settings", path: "/settings" },
   ];
 
@@ -37,11 +38,11 @@ export function DefaultSidebar() {
       w-16 p-2 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-gray-50`}
     >
       <div
-        className={`mb-4 p-4 ${isOpen ? "bg-indigo-600" : "bg-white"} md:bg-indigo-600 
-        rounded-full flex items-center justify-between transition-colors duration-300`}
+        className={`mb-4 p-4 ${isOpen ? "bg-indigo-600" : "bg-white"} md:bg-indigo-600  rounded-xl
+         flex items-center justify-between transition-colors duration-300`}
       >
         <ListItemPrefix 
-          className={`mr-2 ${isOpen ? "md:opacity-100 md:w-auto" : "md:opacity-0 md:w-0"} 
+          className={`mr-1 ${isOpen ? "md:opacity-100 md:w-auto" : "md:opacity-0 md:w-0"} 
           hidden md:block transition-all duration-300 ease-in-out overflow-hidden`}
         >
           <svg
@@ -81,9 +82,9 @@ export function DefaultSidebar() {
         {navItems.map((item, index) => (
           <Link key={index} to={item.path}>
             <ListItem 
-              className={`py-3 ${
+              className={`py-3 px-1.5 ${
                 location.pathname === item.path 
-                  ? 'bg-indigo-400' 
+                  ? 'bg-indigo-400'
                   : 'hover:bg-indigo-400 hover:text-white'
               }`}
             >
@@ -110,3 +111,4 @@ export function DefaultSidebar() {
     </Card>
   );
 }
+export default DefaultSidebar;

@@ -10,6 +10,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import ForgotPassword from "./components/ForgotPassword";
+import UsersPage from "./pages/UsersPage";
 
 const App = () => {
   return (
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/home" element={<HomePage />} />
         <Route path="/profile" element = {<ProfilePage/>} />
         <Route path = "/forgotpassword" element = {<ForgotPassword/>} />
+        <Route path = "/users" element = {<UsersPage/>} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>
