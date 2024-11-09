@@ -11,7 +11,7 @@ const ProfilePage = () => {
       </div>
       
       
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex-1 p-6 overflow-auto">
         <ProfileSettings />
       </div>
     </div>
