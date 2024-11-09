@@ -11,6 +11,7 @@ import HomePage from "./pages/HomePage";
 import ProfilePage from "./pages/ProfilePage";
 import ForgotPassword from "./components/ForgotPassword";
 import UsersPage from "./pages/UsersPage";
+import ProfileSettingPage from "./pages/ProfileSettingsPage"
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/profile" element = {<ProfilePage/>} />
         <Route path = "/forgotpassword" element = {<ForgotPassword/>} />
         <Route path = "/users" element = {<UsersPage/>} />
+        <Route path = "/settings" element = {<ProfileSettingPage/>} />
         {/* Add other routes as needed */}
       </Routes>
     </Router>
