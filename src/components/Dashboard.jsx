@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { 
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
   BarChart, Bar, PieChart, Pie, Cell,
   ResponsiveContainer
 } from 'recharts';
 import defaultProfileImage from "../assets/images/defaultProfile.jpg"; // Import the default profile image
+import { ThemeContext } from "../ThemeContext";
 
 // Dummy data for charts
 const salesData = [
@@ -37,6 +38,7 @@ function Dashboard() {
   const dropdownRef = useRef(null);
   const [timeFilter, setTimeFilter] = useState('week');
   const [filteredData, setFilteredData] = useState(salesData);
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     // Get the user's name and profile image URL from local storage
@@ -169,7 +171,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="relative p-6">
+    <div className={`relative p-6 bg-white dark:bg-gray-900 transition-colors`}>
       {/* User Profile Section */}
       <div className="absolute top-2 right-6 flex items-center space-x-4">
         <span className="block font-medium text-black text-sm cursor-pointer">{userName}</span>

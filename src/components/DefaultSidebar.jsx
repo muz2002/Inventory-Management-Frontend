@@ -1,4 +1,5 @@
-import { useState } from "react";
+import React, { useContext, useState } from "react";
+import { ThemeContext } from "../ThemeContext";
 import {
   Card,
   Typography,
@@ -14,12 +15,15 @@ import {
   Bars3Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  UserGroupIcon 
+  UserGroupIcon,
+  MoonIcon,
+  SunIcon,
 } from "@heroicons/react/24/solid";
 import { Link, useLocation } from "react-router-dom";
 import LogoutButton from "./LogoutButton";
 
-export function DefaultSidebar() {
+const DefaultSidebar = () => {
+  const { theme, toggleTheme } = useContext(ThemeContext);
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
 
@@ -27,7 +31,7 @@ export function DefaultSidebar() {
     { icon: <PresentationChartBarIcon className="h-5 w-5" />, text: "Dashboard", path: "/home" },
     { icon: <ShoppingBagIcon className="h-5 w-5" />, text: "Sales Orders", path: "/sales-orders" },
     { icon: <UserCircleIcon className="h-5 w-5" />, text: "Profile", path: "/profile" },
-    {icon : <UserGroupIcon className="h-5 w-5" />, text: "Users", path: "/users"},
+    { icon: <UserGroupIcon className="h-5 w-5" />, text: "Users", path: "/users" },
     { icon: <Cog6ToothIcon className="h-5 w-5" />, text: "Settings", path: "/settings" },
   ];
 
@@ -35,8 +39,11 @@ export function DefaultSidebar() {
     <Card
       className={`h-screen transition-all duration-300 ease-in-out overflow-hidden
       ${isOpen ? "md:w-[16rem]" : "md:w-16"} 
-      w-16 p-2 shadow-xl shadow-blue-gray-900/5 flex flex-col bg-gray-50`}
+      w-16 p-2 shadow-xl shadow-blue-gray-900/5 flex flex-col 
+      bg-gray-50 dark:bg-gray-800 dark:rounded-none`}
     >
+      
+
       <div
         className={`mb-4 p-4 ${isOpen ? "bg-indigo-600" : "bg-white"} md:bg-indigo-600  rounded-xl
          flex items-center justify-between transition-colors duration-300`}
@@ -73,7 +80,7 @@ export function DefaultSidebar() {
           {isOpen ? (
             <ChevronLeftIcon className="h-5 w-5" />
           ) : (
-            <ChevronRightIcon className="h-5 w-5" />
+            <ChevronRightIcon className="h-5 w-5 -ml-1" />
           )}
         </button>
       </div>
@@ -85,11 +92,11 @@ export function DefaultSidebar() {
               className={`py-3 px-1.5 ${
                 location.pathname === item.path 
                   ? 'bg-indigo-400'
-                  : 'hover:bg-indigo-400 hover:text-white'
+                  : 'hover:bg-indigo-400 hover:text-white dark:text-white'
               }`}
             >
               <ListItemPrefix className="mr-3">
-                <div className={location.pathname === item.path ? 'text-white' : ''}>
+                <div className={location.pathname === item.path ? 'text-white'  : ''}>
                   {item.icon}
                 </div>
               </ListItemPrefix>
@@ -97,7 +104,7 @@ export function DefaultSidebar() {
                 className={`
                   ${isOpen ? 'md:block' : 'md:hidden'} 
                   hidden font-normal text-base
-                  ${location.pathname === item.path ? 'text-white' : 'text-blue-gray-700'}
+                  ${location.pathname === item.path ? 'text-white' : 'text-blue-gray-700 dark:text-white'}
                 `}
               >
                 {item.text}
@@ -106,9 +113,25 @@ export function DefaultSidebar() {
           </Link>
         ))}
       </List>
+       {/* Toggle Button */}
+       <div className="flex justify-start p-5 -ml-5 ">
+        <button
+          onClick={toggleTheme}
+          className="rounded-full p-2 hover:bg-gray-500 dark:hover:bg-yellow-300 transition-colors"
+          aria-label="Toggle dark mode"
+        >
+          {theme === 'dark' ? (
+            <SunIcon className="h-6 w-6 text-yellow-300 hover:text-gray-500" />
+          ) : (
+            <MoonIcon className="h-6 w-6 text-gray-500 hover:text-white" />
+          )}
+        </button>
+      </div>
 
       <LogoutButton isOpen={isOpen} />
     </Card>
   );
-}
+};
+
 export default DefaultSidebar;
+

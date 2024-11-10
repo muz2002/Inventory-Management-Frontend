@@ -40,7 +40,7 @@ function LogoutButton({ isOpen }) {
 
   return (
     <>
-      <ListItem className="hover:bg-indigo-400 hover:text-white focus:bg-indigo-50 py-3" onClick={handleOpen}>
+      <ListItem className="hover:bg-indigo-400 hover:text-white dark:text-white focus:bg-indigo-50 py-3" onClick={handleOpen}>
         <ListItemPrefix className="mr-4">
           <ArrowLeftOnRectangleIcon className="h-5 w-5" />
         </ListItemPrefix>

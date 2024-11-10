@@ -1,5 +1,5 @@
 import React from "react";
-import { DefaultSidebar } from "../components/DefaultSidebar";
+import DefaultSidebar from "../components/DefaultSidebar";
 import Profile from "../components/Profile";
 
 const ProfilePage = () => {
