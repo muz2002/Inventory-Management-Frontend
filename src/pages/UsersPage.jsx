@@ -11,7 +11,7 @@ const UsersPage = () => {
           </div>
           
           {/* Dashboard fills the remaining space and is scrollable */}
-          <div className="flex-1 p-6 overflow-auto">
+          <div className="flex-1 p-6 overflow-auto dark:bg-gray-900">
             <ListUsers />
           </div>
         </div>
