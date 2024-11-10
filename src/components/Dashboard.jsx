@@ -232,7 +232,7 @@ function Dashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Total Stock Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg">
+            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
               <h3 className="text-lg font-medium text-gray-700 mb-2">Total Stock</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.total_stock || 0}
@@ -240,7 +240,7 @@ function Dashboard() {
             </div>
 
             {/* Sales Orders Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg">
+            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
               <h3 className="text-lg font-medium text-gray-700 mb-2">Sales Orders</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.sales_orders || 0}
@@ -248,7 +248,7 @@ function Dashboard() {
             </div>
 
             {/* Purchase Orders Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg">
+            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
               <h3 className="text-lg font-medium text-gray-700 mb-2">Purchase Orders</h3>
               <p className="text-3xl font-bold text-gray-900">
                 {dashboardData.purchase_orders || 0}
@@ -283,8 +283,8 @@ function Dashboard() {
       {/* Charts Grid */}
       <div className="grid grid-cols-2 gap-6">
         {/* Sales vs Purchases Chart */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Sales vs Purchases</h2>
+        <div className="bg-white p-4 rounded-lg dark:bg-gray-600 shadow">
+          <h2 className="text-lg font-semibold mb-4 dark:text-white">Sales vs Purchases</h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />

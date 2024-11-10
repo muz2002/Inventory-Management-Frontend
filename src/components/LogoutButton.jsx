@@ -42,7 +42,7 @@ function LogoutButton({ isOpen }) {
     <>
       <ListItem className="hover:bg-indigo-400 hover:text-white dark:text-white focus:bg-indigo-50 py-3" onClick={handleOpen}>
         <ListItemPrefix className="mr-4">
-          <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+          <ArrowLeftOnRectangleIcon className="h-5 w-5 ml-3" />
         </ListItemPrefix>
         <Typography 
           className={`${isOpen ? 'md:block' : 'md:hidden'} hidden font-normal text-base text-blue-gray-700`}
