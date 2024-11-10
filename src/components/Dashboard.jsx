@@ -232,25 +232,25 @@ function Dashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Total Stock Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">Total Stock</h3>
-              <p className="text-3xl font-bold text-gray-900">
+            <div className="p-6 bg-white shadow-lg rounded-lg dark:bg-gray-600 mt-3">
+              <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-2">Total Stock</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {dashboardData.total_stock || 0}
               </p>
             </div>
 
             {/* Sales Orders Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">Sales Orders</h3>
-              <p className="text-3xl font-bold text-gray-900">
+            <div className="p-6 bg-white shadow-lg rounded-lg dark:bg-gray-600 mt-3">
+              <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-2">Sales Orders</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {dashboardData.sales_orders || 0}
               </p>
             </div>
 
             {/* Purchase Orders Card */}
-            <div className="p-6 bg-white shadow-lg rounded-lg mt-3">
-              <h3 className="text-lg font-medium text-gray-700 mb-2">Purchase Orders</h3>
-              <p className="text-3xl font-bold text-gray-900">
+            <div className="p-6 bg-white shadow-lg rounded-lg dark:bg-gray-600 mt-3">
+              <h3 className="text-lg font-medium text-gray-700 dark:text-white mb-2">Purchase Orders</h3>
+              <p className="text-3xl font-bold text-gray-900 dark:text-white">
                 {dashboardData.purchase_orders || 0}
               </p>
             </div>
@@ -262,19 +262,19 @@ function Dashboard() {
       <div className="mb-6 flex gap-4 mt-5">
         <button
           onClick={() => handleFilterChange('week')}
-          className={`px-4 py-2 rounded ${timeFilter === 'week' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${timeFilter === 'week' ? 'bg-indigo-500 text-white' : 'bg-gray-200'}`}
         >
           Week
         </button>
         <button
           onClick={() => handleFilterChange('month')}
-          className={`px-4 py-2 rounded ${timeFilter === 'month' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${timeFilter === 'month' ? 'bg-indigo-500 text-white' : 'bg-gray-200'}`}
         >
           Month
         </button>
         <button
           onClick={() => handleFilterChange('year')}
-          className={`px-4 py-2 rounded ${timeFilter === 'year' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-4 py-2 rounded ${timeFilter === 'year' ? 'bg-indigo-500 text-white' : 'bg-gray-200'}`}
         >
           Year
         </button>
@@ -284,7 +284,7 @@ function Dashboard() {
       <div className="grid grid-cols-2 gap-6">
         {/* Sales vs Purchases Chart */}
         <div className="bg-white p-4 rounded-lg dark:bg-gray-600 shadow">
-          <h2 className="text-lg font-semibold mb-4 dark:text-white">Sales vs Purchases</h2>
+          <h2 className="text-lg font-semibold mb-4 dark:text-white dark:text-white">Sales vs Purchases</h2>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
@@ -299,8 +299,8 @@ function Dashboard() {
         </div>
 
         {/* Top Products Chart */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Top Products</h2>
+        <div className="bg-white p-4 rounded-lg dark:bg-gray-600 shadow">
+          <h2 className="text-lg font-semibold mb-4 dark:text-white">Top Products</h2>
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
               <Pie
@@ -323,8 +323,8 @@ function Dashboard() {
         </div>
 
         {/* Monthly Revenue Chart */}
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h2 className="text-lg font-semibold mb-4">Monthly Revenue</h2>
+        <div className="bg-white p-4 rounded-lg dark:bg-gray-600 shadow">
+          <h2 className="text-lg font-semibold mb-4 dark:text-white">Monthly Revenue</h2>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={filteredData}>
               <CartesianGrid strokeDasharray="3 3" />
