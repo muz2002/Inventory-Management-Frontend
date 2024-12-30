@@ -90,3 +90,8 @@ Welcome to the **React Application**! This project is a feature-rich web applica
     ```bash
     npm start
 
+## Backend
+
+The backend part of this project is available in a separate repository. You can find it at the following link:
+
+[Backend Repository](https://github.com/muz2002/Inventory-Management-Backend.git)
