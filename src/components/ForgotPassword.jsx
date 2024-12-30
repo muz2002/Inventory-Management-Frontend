@@ -198,9 +198,9 @@ const ForgotPassword = () => {
 
           {step === 1 && (
             <Link to="/register">
-              <p className="text-center">
+              <p className="text-center dark:text-white">
                 Not registered yet?{" "}
-                <span className="text-indigo-600 font-medium inline-flex space-x-1 items-center">
+                <span className="text-indigo-600 font-medium inline-flex space-x-1 items-center dark:text-indigo-400">
                   Register now
                 </span>
               </p>

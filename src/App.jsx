@@ -13,6 +13,7 @@ import ProfilePage from "./pages/ProfilePage";
 import ForgotPassword from "./components/ForgotPassword";
 import UsersPage from "./pages/UsersPage";
 import ProfileSettingPage from "./pages/ProfileSettingsPage";
+import  Modal  from "./components/Modal";
 
 const App = () => {
   const [theme, setTheme] = useState(() => {
@@ -46,6 +47,7 @@ const App = () => {
           <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/users" element={<UsersPage />} />
           <Route path="/settings" element={<ProfileSettingPage />} />
+          <Route path="/modal" element={<Modal />} />
           {/* Add other routes as needed */}
         </Routes>
       </Router>
